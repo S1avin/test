@@ -8,12 +8,13 @@ def home():
         try:
             Id = request.form['ID']
             Loc = request.form['LOC']
-            t=[Id, Loc]
+            Tit = request.form['TITL']
+            t=[Id, Loc, Tit]
 
-            with sql.connect("loc.db") as con:
+            with sql.connect("main.db") as con:
                 cur = con.cursor()
             
-                cur.execute("INSERT INTO Loction (Id,Location) VALUES (?,?)",t)
+                cur.execute("INSERT INTO maintable (Id,Location,Title) VALUES (?,?,?)",t)
             
                 con.commit()
 
@@ -29,11 +30,11 @@ def home():
 
 @app.route('/loc')
 def loc():
-   con = sql.connect("loc.db")
+   con = sql.connect("main.db")
    con.row_factory = sql.Row
    
    cur = con.cursor()
-   cur.execute("select * from Loction")
+   cur.execute("select * from maintable")
    
    rows = cur.fetchall();
    return render_template("loc.html",rows = rows)
